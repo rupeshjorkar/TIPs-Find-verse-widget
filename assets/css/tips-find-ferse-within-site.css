@@ -1,0 +1,121 @@
+/* tips-find-ferse-within-site.css */
+table.form-table th.inner_option {
+    font-weight: 400;
+}
+table.form-table tr.heading_tr {
+    border-bottom: solid;
+}
+table.form-table th {
+    width: 45% !important;
+}
+.tips-instruction-page {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.tips-instruction-page h1 {
+    color: #0056b3;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+}
+
+.tips-instruction-page h2 {
+    color: #0073aa;
+    margin-top: 20px;
+    font-size: 1.4em;
+}
+
+.tips-instruction-page ol {
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+.tips-instruction-page ol li {
+    margin-bottom: 10px;
+}
+
+.tips-instruction-page p {
+    font-size: 1.1em;
+    margin-top: 15px;
+}
+
+.tips-instruction-page a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.tips-instruction-page a:hover {
+    text-decoration: underline;
+}
+
+.onoffswitch {
+    position: relative;
+    width: 90px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #999;
+    border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    background-color: #34A7C1;
+    color: #fff;
+    padding-left: 10px;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    background-color: #eee;
+    color: #999;
+    padding-right: 10px;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block;
+    width: 18px;
+    margin: 6px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 56px;
+    border: 2px solid #999;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
