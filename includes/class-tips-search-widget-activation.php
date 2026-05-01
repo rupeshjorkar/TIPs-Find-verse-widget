@@ -10,18 +10,94 @@ class Tips_Search_Widget_Activation
     }
     public function enqueue_custom_script()
     {
+        // Check if AJAX is enabled
+        $enable_ajax = get_option('tips_enable_ajax', 'off');
+        
+        if ($enable_ajax === 'on') {
+            // Load React assets when AJAX is enabled
+            $this->load_react_assets();
+        } else {
+            // Load traditional assets when AJAX is disabled
+            $this->load_traditional_assets();
+        }
+    }
+    private function load_react_assets()
+    {
+        global $post;
+        
+        // Only load on pages that have the shortcode
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'tips_find_verse')) {
+            // Production CSS
+            wp_enqueue_style(
+                'react-app-css',
+                TIPS_SEARCH_WIDGET_URL . 'includes/react/dist/assets/index.css',
+                array(),
+                '0.0.3'
+            );
+
+            // Production JS
+            wp_enqueue_script(
+                'react-app-js',
+                TIPS_SEARCH_WIDGET_URL . 'includes/react/dist/assets/index.js',
+                array(),
+                '0.0.3',
+                true
+            );
+            
+            wp_enqueue_script( 'react-app-js-for-video', TIPS_SEARCH_WIDGET_URL . 'assets/js/video.js', '1.0', false ); 
+
+            // Localize script with WordPress options for React
+            $this->localize_react_data();
+        }
+    }
+
+    private function load_traditional_assets()
+    {
         wp_enqueue_script( 'chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.js', [], '1.0', false );
-		wp_enqueue_script( 'chartjs-plugin-datalabels', TIPS_SEARCH_WIDGET_URL . 'js/chartjs-plugin-datalabels.js', ['chartjs'], '1.0', false );		
-		wp_enqueue_script( 'chartjs-chart-graph', TIPS_SEARCH_WIDGET_URL . 'js/index.umd.js', ['chartjs', 'chartjs-plugin-datalabels'], '1.0', false );	
+        wp_enqueue_script( 'chartjs-plugin-datalabels', TIPS_SEARCH_WIDGET_URL . 'js/chartjs-plugin-datalabels.js', ['chartjs'], '1.0', false );        
+        wp_enqueue_script( 'chartjs-chart-graph', TIPS_SEARCH_WIDGET_URL . 'js/index.umd.js', ['chartjs', 'chartjs-plugin-datalabels'], '1.0', false );    
         wp_enqueue_style('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' );
         wp_enqueue_script('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js', array('jquery') );
         wp_enqueue_script( 'select2-js', TIPS_SEARCH_WIDGET_URL . 'js/select2_custom.js', ['select2'], '1.0', false ); 
         wp_localize_script( 'select2-js', 'select2', array( 'category_url' => get_permalink( get_page_by_path( 'tips-category' ) ) ) );
+        wp_enqueue_script( 'php-js-for-video', TIPS_SEARCH_WIDGET_URL . 'assets/js/video.js', '1.0', false ); 
+    }
+
+    private function localize_react_data() {
+        $react_data = array(
+            'color' => get_option('tips_find_verse_color', '#31bbd8'),
+            'button_text' => get_option('tips_find_verse_button_text', 'Find Verse'),
+            'place_order' => get_option('tips_find_verse_place_order', 'Tips: Find Verse'),
+            'color2' => get_option('tips_find_sec_verse_color', '#31bbd8'),
+            'button_text2' => get_option('tips_find_sec_verse_button_text', 'Search text...'),
+            'place_order2' => get_option('tips_find_sec_verse_place_order', 'Search'),
+            'color3' => get_option('tips_find_thir_verse_color', '#31bbd8'),
+            'button_text3' => get_option('tips_find_thir_verse_button_text', 'Pick category'),
+            'place_order3' => get_option('tips_find_thir_verse_place_order', 'Select'),
+            'enable_first_search' => get_option('tips_enable_first_search', 'off'),
+            'enable_second_search' => get_option('tips_enable_secound_search', 'off'),
+            'enable_third_search' => get_option('tips_enable_third_search', 'off'),
+            'enable_ajax' => get_option('tips_enable_ajax', 'off'),
+            'enable_greek'   => get_option('tips_enable_greek_translation', 'off'),
+            'enable_english'   => get_option('tips_enable_english_translation', 'off'),
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('react_app_nonce'),
+            'plugin_url' => TIPS_SEARCH_WIDGET_URL
+        );
+
+        wp_localize_script('react-app-js', 'tipsReactData', $react_data);
     }
 
     public static function activate()
     {
         self::add_pages_with_templates();
+        $response = Tips_API_Common::tips_site_registration_api();
+        
+        if (isset($response['error'])) {
+            error_log('Source registration failed: ' . $response['error']);
+        } else {
+            error_log('Source registration success: ' . print_r($response, true));
+        }
     }
     private static function add_pages_with_templates()
     {
@@ -239,14 +315,30 @@ class Tips_Search_Widget_Activation
         return $vars;
     }
     
-    public function tips_find_verse_fun() {
+    public function tips_find_verse_fun($atts) {
+        // Parse shortcode attributes with defaults
+        $attributes = shortcode_atts(array(
+            'class' => 'box_layout', // Default empty class
+        ), $atts);
+        
+        $enable_ajax = get_option('tips_enable_ajax', 'off');
+        
         ob_start();
-        $plugin_file_path = plugin_dir_path(dirname(__FILE__)) . 'templates/template-search-box.php';
-        if (file_exists($plugin_file_path)) {
-            include($plugin_file_path);
+        
+        if ($enable_ajax === 'on') {
+            // Render React container with custom class when AJAX is enabled
+            $class_attr = !empty($attributes['class']) ? ' class="' . esc_attr($attributes['class']) . '"' : '';
+            echo '<div id="react-root"' . $class_attr . '></div>';
         } else {
-            echo 'Plugin template file not found.';
+            // Render traditional PHP template when AJAX is disabled
+            $plugin_file_path = plugin_dir_path(dirname(__FILE__)) . 'templates/template-search-box.php';
+            if (file_exists($plugin_file_path)) {
+                include($plugin_file_path);
+            } else {
+                echo 'Plugin template file not found.';
+            }
         }
+        
         $content = ob_get_clean();
         return $content;
     }

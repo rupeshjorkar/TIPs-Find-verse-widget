@@ -119,3 +119,6 @@ table.form-table th {
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
 }
+.find_ver_error{
+	text-align:center;
+}

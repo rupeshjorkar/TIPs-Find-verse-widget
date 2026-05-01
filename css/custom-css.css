@@ -611,4 +611,9 @@ article.source-detail p{
 .book-stories-section h1 span, .book-stories-section h2 span{
 	letter-spacing:normal;
 }
-
+.find_ver_error{
+	text-align:center;
+}
+.inner-page-design .page_main_title{
+        z-index: 1;
+}

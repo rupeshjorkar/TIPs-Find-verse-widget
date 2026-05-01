@@ -60,6 +60,7 @@ class TipsFindSettings {
         $enable_first_search = get_option('tips_enable_first_search', 'off'); // Default value is 'off'
         $enable_secound_search = get_option('tips_enable_secound_search', 'off'); // Default value is 'off'
         $enable_third_search   = get_option('tips_enable_third_search', 'off');
+        $enable_ajax = get_option('tips_enable_ajax', 'off');
         
         $tips_enable_greek_translation   = get_option('tips_enable_greek_translation', 'off');
         $tips_enable_english_translation   = get_option('tips_enable_english_translation', 'off');
@@ -150,6 +151,22 @@ class TipsFindSettings {
                             <div class="onoffswitch">
                                 <input type="checkbox" name="tips_enable_third_search" class="onoffswitch-checkbox" id="switch-third" value="on" <?php checked($enable_third_search, 'on'); ?>>
                                 <label class="onoffswitch-label" for="switch-third">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- AJAX-->
+                    <tr valign="top">
+                        <th scope="row" class="inner_option">
+                            <?php esc_html_e('Display Result With AJAX', 'tips-find-ferse-within-site'); ?>
+                        </th>
+                        <td>
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="tips_enable_ajax" class="onoffswitch-checkbox" id="ajax" value="on" <?php checked($enable_ajax, 'on'); ?>>
+                                <label class="onoffswitch-label" for="ajax">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
                                 </label>
@@ -322,6 +339,7 @@ add_action('admin_init', function() {
     register_setting('tips-find-ferse-within-site-settings', 'tips_enable_third_search', 'sanitize_text_field');
     register_setting('tips-find-ferse-within-site-settings', 'tips_enable_greek_translation', 'sanitize_text_field');
     register_setting('tips-find-ferse-within-site-settings', 'tips_enable_english_translation', 'sanitize_text_field');
+    register_setting('tips-find-ferse-within-site-settings', 'tips_enable_ajax', 'sanitize_text_field');
 });
 
 

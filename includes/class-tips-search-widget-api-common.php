@@ -177,5 +177,53 @@ class Tips_API_Common
         $result = self::verify_response($response); 
         return $result;
     }
+    public static function tips_site_registration_api() {
+        // Get domain and site title
+        $site_domain = home_url(); 
+        $site_title  = get_bloginfo('name');
 
+        // Send POST request to source_register endpoint
+        $response = wp_remote_post(
+            TIPS_SEARCH_WIDGET_API_URL . 'wp-json/v1/bible/site_register',
+            [
+                'timeout' => 60,
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'X-Site-Domain' => $site_domain,
+                    'X-Site-Title'  => $site_title,
+                ],
+                'body' => json_encode([]) // Optional empty body
+            ]
+        );
+
+        // Handle error if request failed
+        if (is_wp_error($response)) {
+            return ['error' => $response->get_error_message()];
+        }
+
+        // Check if response handler exists
+        if (!method_exists(__CLASS__, 'verify_response')) {
+            return ['error' => 'verify_response() method is missing.'];
+        }
+
+        // Return parsed response
+        return self::verify_response($response);
+    }
+    public static function fetch_Tips_resource_git_access_token()
+    {
+        $response = wp_remote_get(
+            ICR_CUSTOMER_API_URL . "wp-json/v1/bible/git_access_token",
+            [
+                "timeout" => 60, // Increased timeout to 60 seconds
+                "headers" => [
+                    "url" => home_url()
+                ],
+            ]
+        );
+        if (!method_exists(__CLASS__, 'verify_response')) {
+            return ['error' => 'verify_response() method is missing.'];
+        }
+        $result = self::verify_response($response);
+        return $result;
+    }
 }
