@@ -4,7 +4,7 @@ Tags: verses, search, widget, inspirational, TIPs
 Requires at least: 5.2
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 2.1
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,8 +13,7 @@ This plugin enables three search boxes and allows customers to search TIPs verse
 == Description ==
 
 **TIPs: Find Verse Widget** provides a flexible and user-friendly interface to help your visitors discover inspirational verses using up to three different search filters: keyword, author/source, and topic.
-
-This plugin embeds a shortcode-powered widget on your site, allowing customers to find and view specific TIPs content without ever leaving the page.
+ de-powered widget on your site, allowing customers to find and view specific TIPs content without ever leaving the page.
 
 == Features ==
 
@@ -59,6 +58,9 @@ Yes. It is built without dependencies and designed for maximum performance.
 
 = 2.1 =
 * add plugin-update-checker 
+= 2.2 =
+* Fixed the Pick Category Issue
+
 
 
 

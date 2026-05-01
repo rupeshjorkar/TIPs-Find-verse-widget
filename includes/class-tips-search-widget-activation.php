@@ -32,7 +32,7 @@ class Tips_Search_Widget_Activation
                 'react-app-css',
                 TIPS_SEARCH_WIDGET_URL . 'includes/react/dist/assets/index.css',
                 array(),
-                '0.0.3'
+                '0.0.4'
             );
 
             // Production JS
@@ -40,7 +40,7 @@ class Tips_Search_Widget_Activation
                 'react-app-js',
                 TIPS_SEARCH_WIDGET_URL . 'includes/react/dist/assets/index.js',
                 array(),
-                '0.0.3',
+                '0.0.4',
                 true
             );
             
