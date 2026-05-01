@@ -1,0 +1,22 @@
+.category-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.find-cat select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#cat-sercch-btn {
+  padding: 8px 16px;
+  background-color: #1c3e56;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}

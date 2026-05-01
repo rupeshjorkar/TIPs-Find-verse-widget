@@ -1,0 +1,9 @@
+#find_verse {
+    margin-bottom: 1rem;
+}
+.book-container {
+    column-count: 3;
+}
+.book-container span{
+    cursor: pointer;
+}

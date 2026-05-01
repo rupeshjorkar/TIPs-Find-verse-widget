@@ -4,7 +4,7 @@ Tags: verses, search, widget, inspirational, TIPs
 Requires at least: 5.2
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,10 +43,18 @@ Yes. It is built without dependencies and designed for maximum performance.
 
 == Changelog ==
 
+= 1.2 =
+* Integrated React for improved UI and interactive verse search experience.
+* Enhanced performance and responsiveness of the widget.
+* Updated codebase to support modern JavaScript workflows.
+
 = 1.0.0 =
 * Initial release with three search boxes and static verse filtering.
 
 == Upgrade Notice ==
+
+= 1.2 =
+Now React implimented! Enjoy a faster, more dynamic verse search experience.
 
 = 1.0.0 =
 Initial stable version.

@@ -3,7 +3,7 @@
  * Plugin Name:       TIPs: Find Verse Widget
  * Description:       This plugin enables three search boxes on the site and allows customers to search TIPs verse data directly within your website. This plugin enables seamless integration of TIPs content, allowing customers to easily access and view specific verses without leaving your site.
  * Author:            Rupesh Jorkar (RJ)
- * Version:           1.0.1
+ * Version:           1.2
  * Requires at least: 5.2
  * Tested up to:      6.5
  * Requires PHP:      7.4
@@ -22,7 +22,7 @@ if ( ! defined( 'PLUGIN_NAME' ) ) {
 	define( 'PLUGIN_NAME', 'tips-find-ferse-within-site' );
 }
 if ( ! defined( 'TIPS_SEARCH_WIDGET_VERSION' ) ) {
-	define( 'TIPS_SEARCH_WIDGET_VERSION', '1.0.1' );
+	define( 'TIPS_SEARCH_WIDGET_VERSION', '1.2' );
 }
 
 if ( ! defined( 'TIPS_SEARCH_WIDGET_PLUGIN_URL' ) ) {
@@ -60,6 +60,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-tips-search-widget-comm
 require_once plugin_dir_path(__FILE__) . 'includes/class-tips-search-widget-api-common.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-tips-search-widget-class.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-tips-find-settings.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-tips-react.php';
 
 // Activation hook
 register_activation_hook(__FILE__, array('Tips_Search_Widget_Activation', 'activate'));

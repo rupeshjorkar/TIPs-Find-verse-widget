@@ -1,0 +1,40 @@
+/* Pagination Styles */
+.book-stories-section .pagination {
+    border-top: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: unset;
+    width: 100%;
+}
+
+.book-stories-section .pagination .page-numbers.current {
+    color: #ffff;
+    padding: 8px 10px;
+    background: #4ab0c8;
+    border-radius: 6px;
+}
+
+.book-stories-section .pagination .page-numbers {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1d9ebc;
+    line-height: 26px;
+    padding: 0;
+    margin: 10px 12px;
+}
+
+.book-stories-section .pagination .next.page-numbers, .book-stories-section .pagination .prev.page-numbers
+ {
+    background-color: #4ab0c8;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+.page-numbers {
+    display: unset !important;
+    width: unset !important;
+}
+.pagination .dots {
+    background-color: unset !important;
+}
