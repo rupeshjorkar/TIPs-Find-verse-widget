@@ -212,7 +212,7 @@ class Tips_API_Common
     public static function fetch_Tips_resource_git_access_token()
     {
         $response = wp_remote_get(
-            ICR_CUSTOMER_API_URL . "wp-json/v1/bible/git_access_token",
+            TIPS_SEARCH_WIDGET_API_URL . "wp-json/v1/bible/git_access_token",
             [
                 "timeout" => 60, // Increased timeout to 60 seconds
                 "headers" => [
