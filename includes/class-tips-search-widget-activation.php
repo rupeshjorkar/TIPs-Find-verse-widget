@@ -82,7 +82,9 @@ class Tips_Search_Widget_Activation
             'enable_english'   => get_option('tips_enable_english_translation', 'off'),
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('react_app_nonce'),
-            'plugin_url' => TIPS_SEARCH_WIDGET_URL
+            'plugin_url' => TIPS_SEARCH_WIDGET_URL,
+            'site_url' => get_site_url(),
+            'proxy_url' => rest_url( 'tips-proxy/v1/' ),   // <-- must be here
         );
 
         wp_localize_script('react-app-js', 'tipsReactData', $react_data);
@@ -298,17 +300,35 @@ class Tips_Search_Widget_Activation
             );
         }
 
+        // Tip Language page : start
+        $tip_language_title = "Language Stories";
+        $tip_language_content = "";
+        $tip_language_slug = "tip_language";
+
+        // Check if the page already exists
+        $tip_language_page = get_page_by_path($tip_language_slug);
+
+        // If the page does not exist, create it
+        if (!$tip_language_page) {
+            $tip_language_page_args = [
+                "post_title"   => $tip_language_title,
+                "post_content" => $tip_language_content,
+                "post_name"    => $tip_language_slug,
+                "post_status"  => "publish",
+                "post_type"    => "page",
+            ];
+
+            $tip_language_page_id = wp_insert_post($tip_language_page_args);
+
+            update_post_meta(
+                $tip_language_page_id,
+                "_wp_page_template",
+                ""
+            );
+        }
+// Tip Language page : end
+
     }
-    // public static function tips_data_management_create_menu()
-    // {
-    //     add_menu_page("Tips", "Tips", "manage_options", "tips", array(__CLASS__, 'tips_auth_admin_page_callback'));
-    // }
-    // public static function tips_auth_admin_page_callback() {
-    //     echo '<div class="wrap">';
-    //     echo '<h1>Tips Data Management</h1>';
-    //     echo '<p>Welcome to the Tips Data Management plugin settings page.</p>';
-    //     echo '</div>';
-    // }
     public function add_custom_query_vars($vars) {
         $vars[] = 'pages';
         $vars[] = 'name';
@@ -316,21 +336,31 @@ class Tips_Search_Widget_Activation
     }
     
     public function tips_find_verse_fun($atts) {
-        // Parse shortcode attributes with defaults
+
+        // ── Check session token first ─────────────────────────────────────────
+        $token = Tips_Session_Manager::get_token();
+    
+        if ( is_wp_error( $token ) ) {
+            $url = TIPS_SEARCH_WIDGET_API_URL;
+        
+        return '<p style="color:#666; font-size:14px;">
+            You do not have access to this page. Please activate your license key in your site\'s backend settings. If you need assistance, please contact the <a href="' . esc_url( $url . 'contact/' ) . '" target="_blank" rel="noopener noreferrer">Tips Support Team</a>.
+        </p>';
+        }
+    
+        // ── Parse shortcode attributes with defaults ──────────────────────────
         $attributes = shortcode_atts(array(
-            'class' => 'box_layout', // Default empty class
+            'class' => 'box_layout',
         ), $atts);
-        
+    
         $enable_ajax = get_option('tips_enable_ajax', 'off');
-        
+    
         ob_start();
-        
+    
         if ($enable_ajax === 'on') {
-            // Render React container with custom class when AJAX is enabled
             $class_attr = !empty($attributes['class']) ? ' class="' . esc_attr($attributes['class']) . '"' : '';
             echo '<div id="react-root"' . $class_attr . '></div>';
         } else {
-            // Render traditional PHP template when AJAX is disabled
             $plugin_file_path = plugin_dir_path(dirname(__FILE__)) . 'templates/template-search-box.php';
             if (file_exists($plugin_file_path)) {
                 include($plugin_file_path);
@@ -338,8 +368,7 @@ class Tips_Search_Widget_Activation
                 echo 'Plugin template file not found.';
             }
         }
-        
-        $content = ob_get_clean();
-        return $content;
+    
+        return ob_get_clean();
     }
 }

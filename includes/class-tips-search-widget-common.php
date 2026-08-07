@@ -64,6 +64,12 @@ class Tips_Common
             $dynamic_content = ob_get_clean();
             return $dynamic_content;
         } 
+        elseif (is_page("tip_language")) {
+            ob_start();
+            include TIPS_SEARCH_WIDGET_DIR . "templates/template-verse-language.php";
+            $dynamic_content = ob_get_clean();
+            return $dynamic_content;
+        } 
         else {
             return $content;
         }
@@ -121,5 +127,26 @@ class Tips_Common
         }
         return $tree;
     
+    }
+    public static function fetch_validate_activation_from_api( $activation_key ) {
+        $nonce = wp_create_nonce( 'tips_activation_nonce' );
+
+        $response = wp_remote_post(
+            TIPS_SEARCH_WIDGET_API_URL . "wp-json/v1/bible/validate_activation",
+            [
+                "timeout" => 60,
+                "headers" => [
+                    "Content-Type" => "application/json",
+                ],
+                "body" => wp_json_encode( [
+                    "activation_key" => $activation_key,
+                    "site_url"       => home_url(),
+                    "nonce"          => $nonce,
+                ] ),
+            ]
+        );
+
+        $result = self::verify_response( $response );
+        return $result;
     }
 }
